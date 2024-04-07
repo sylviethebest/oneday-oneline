@@ -1,9 +1,12 @@
-import React, { FC, ChangeEvent, useState } from 'react';
 import './App.css';
-import Line from "./Components/Line";
-import { ILine } from "./Interfaces";
+import Header from "./Components/Header";
+import Main from "./Components/Main";
+import { ILine, IData } from "./Interfaces";
 
-const App: FC = () => {
+import React, { FC, ChangeEvent, useState } from 'react';
+
+
+const App = () => {
 
   function makeDate(date: Date) {
     return new Date(date.getTime());
@@ -28,39 +31,21 @@ const App: FC = () => {
   const addLine = (): void => {
     const newLine = {lineText: line, lineDate: date?.toISOString().substring(0, 10)};
     setLineList([...lineList, newLine]);
-    console.log(lineList);
     setLine("");
     setDate(nowDate);
   };
 
   return (
     <div>
-      <div className="header">
-        <p>One Day One Line</p>
-      </div>
-      <div className="main">
-        <div className="inputContainer">
-          <div className="dateContainer">
-            <p>Date</p>
-            <input type="date" value={date?.toISOString().substring(0, 10)} onChange={handleDateChange}/>
-          </div>
-          <div className="lineContainer">
-            <p>Line of Today</p>
-            <textarea className="tbLine" placeholder="오늘의 문장을 입력해주세요" onChange={handleTextChange} value={line}/>
-          </div>
-        </div>
-        <button className="btnSave" onClick={addLine}>Enter</button>
-        <div className="todoContainer">
-          <div>
-            <p>History</p>
-          </div>
-          <div>
-            {lineList.map((line: ILine, key: number) => {
-              return <Line key={key} line={line} />;
-            })}
-          </div>
-        </div>
-      </div>
+      <Header />
+      <Main
+        date={date}
+        text={line} 
+        dateEvent={handleDateChange} 
+        textEvent={handleTextChange} 
+        addLine={addLine} 
+        lineList={lineList}
+        />
     </div>
   );
 }
